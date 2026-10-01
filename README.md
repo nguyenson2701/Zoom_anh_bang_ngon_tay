@@ -6,10 +6,10 @@
 
 | Thành viên | Vai trò |
 | --- | --- |
-| Trưởng nhóm | Thiết lập repo, kết nối module, tổng hợp sản phẩm |
-| Ngân | Module Camera & Nhận diện bàn tay |
-| Ngọc | Module tính toán & logic Zoom |
-| Nhàn | Giao diện, tích hợp & kiểm thử |
+| Ngân | Module 1: Camera & Nhận diện bàn tay (`hand_detector.py`) |
+| Ngọc | Module 2: Tính khoảng cách & ánh xạ hệ số zoom (`zoom_math.py`) |
+| Nhàn | Module 3: Làm mượt (smoothing) & áp dụng zoom lên ảnh (`zoom_apply.py`) |
+| Trưởng nhóm | Module 4: Giao diện (Tkinter) & tích hợp (`main.py`); quản lý repo, báo cáo, video |
 
 ## Cài đặt
 
@@ -37,11 +37,13 @@ Bấm **Bắt đầu** để mở camera, đưa tay vào khung hình và chụm/
 
 ```
 .
-├── hand_detector.py   # module nhận diện tay (Ngân)
-├── zoom_logic.py      # module tính toán zoom (Ngọc)
-├── main.py             # giao diện + tích hợp (Nhàn)
+├── hand_detector.py   # module nhận diện bàn tay, xuất tọa độ ngón cái/trỏ (Ngân)
+├── zoom_math.py       # tính khoảng cách Euclid + ánh xạ sang hệ số zoom (Ngọc)
+├── zoom_apply.py      # làm mượt (ZoomSmoother) + áp dụng zoom lên khung hình (Nhàn)
+├── main.py            # giao diện Tkinter + tích hợp 3 module trên (Trưởng nhóm)
 ├── requirements.txt
 ├── .github/
+│   ├── CODEOWNERS                 # bắt buộc trưởng nhóm review mọi Pull Request
 │   ├── workflows/ci.yml           # kiểm tra code tự động khi có Pull Request
 │   └── PULL_REQUEST_TEMPLATE.md   # mẫu mô tả Pull Request
 └── scripts/
