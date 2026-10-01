@@ -1,0 +1,21 @@
+# Moi truong ao
+venv/
+env/
+.venv/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# File tam / ket qua chay thu
+*.log
+output/
+*.avi
+*.mp4
