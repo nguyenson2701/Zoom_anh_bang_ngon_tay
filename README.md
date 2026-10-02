@@ -9,7 +9,7 @@
 | Ngân | Module 1: Camera & Nhận diện bàn tay (`hand_detector.py`) |
 | Ngọc | Module 2: Tính khoảng cách & ánh xạ hệ số zoom (`zoom_math.py`) |
 | Nhàn | Module 3: Làm mượt (smoothing) & áp dụng zoom lên ảnh (`zoom_apply.py`) |
-| Trưởng nhóm | Module 4: Giao diện (Tkinter) & tích hợp (`main.py`); quản lý repo, báo cáo, video |
+| Sơn | Module 4: Giao diện (Tkinter) & tích hợp (`main.py`); quản lý repo, báo cáo, video |
 
 ## Cài đặt
 
