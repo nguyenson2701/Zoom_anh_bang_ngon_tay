@@ -23,7 +23,9 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Yêu cầu Python 3.9–3.11 (MediaPipe chưa hỗ trợ tốt bản Python quá mới).
+**Yêu cầu bắt buộc:**
+- Python 3.9–3.11 (khuyến nghị 3.11). Các bản mediapipe mới (0.10.30+/1.0.x) đã **bỏ hẳn** API `mp.solutions.hands` mà dự án này dùng — nếu máy chỉ có Python bản quá mới (3.12+), cài thêm Python 3.11 riêng (dùng [uv](https://github.com/astral-sh/uv): `uv venv --python 3.11 venv`) rồi `pip install -r requirements.txt` vào venv đó.
+- **Đường dẫn thư mục dự án (và cả đường dẫn Python) KHÔNG được có dấu tiếng Việt hoặc ký tự Unicode** (vd. `D:\Học\...` sẽ lỗi). Lõi C++ của mediapipe trên Windows không đọc được file tài nguyên khi đường dẫn có dấu, dẫn tới lỗi `FileNotFoundError` khi khởi tạo `Hands()` dù cài đúng thư viện. Hãy clone/đặt project ở đường dẫn thuần ASCII, ví dụ `D:\zoom-anh-bang-ngon-tay`.
 
 ## Cách chạy
 
