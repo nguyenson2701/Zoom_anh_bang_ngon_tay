@@ -18,22 +18,61 @@ Hop dong du lieu:
 
 import numpy as np
 
-
 def calculate_distance(point1, point2):
-    """TODO (Ngoc): khoang cach Euclid giua point1=(x1, y1) va point2=(x2, y2)."""
-    raise NotImplementedError("Ngoc: hoan thien calculate_distance")
+    """
+    Khoảng cách Euclid giữa 2 điểm.
+    """
+    x1, y1 = point1
+    x2, y2 = point2
+
+    return np.hypot(x2 - x1, y2 - y1)
 
 
-def map_distance_to_zoom(distance, min_distance=30, max_distance=200,
-                          min_zoom=1.0, max_zoom=3.0):
+def map_distance_to_zoom(distance,
+                         min_distance=30,
+                         max_distance=200,
+                         min_zoom=1.0,
+                         max_zoom=3.0):
     """
-    TODO (Ngoc): dung np.interp de anh xa distance (trong [min_distance, max_distance])
-    sang he so zoom (trong [min_zoom, max_zoom]), dung np.clip de khong vuot bien.
-    Luu y: khoang cach CANG NHO (chum ngon tay) -> zoom CANG LON.
+    Ánh xạ khoảng cách sang hệ số zoom.
+    Khoảng cách càng nhỏ -> zoom càng lớn.
     """
-    raise NotImplementedError("Ngoc: hoan thien map_distance_to_zoom")
+
+    zoom = np.interp(
+        distance,
+        [min_distance, max_distance],
+        [max_zoom, min_zoom]
+    )
+
+    zoom = np.clip(
+        zoom,
+        min_zoom,
+        max_zoom
+    )
+
+    return float(zoom)
 
 
 if __name__ == "__main__":
-    # TODO (Ngoc): test voi vai cap toa do gia lap, in ra distance va zoom tuong ung
-    pass
+
+    print("=== TEST KHOANG CACH ===")
+
+    p1 = (100, 100)
+    p2 = (200, 150)
+
+    distance = calculate_distance(p1, p2)
+
+    print("P1 =", p1)
+    print("P2 =", p2)
+    print("Distance =", round(distance, 2))
+
+    print("\n=== TEST ZOOM ===")
+
+    test_distances = [20, 30, 50, 100, 150, 200, 250]
+
+    for d in test_distances:
+        zoom = map_distance_to_zoom(d)
+
+        print(
+            f"distance = {d:3} --> zoom = {zoom:.2f}x"
+        )
