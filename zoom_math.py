@@ -1,14 +1,6 @@
 """
 Module 2 - Tinh khoang cach & anh xa he so zoom (phu trach: Ngoc)
 
-TODO (Ngoc):
-    1. calculate_distance(point1, point2): khoang cach Euclid giua 2 diem
-    2. map_distance_to_zoom(distance, ...): dung np.interp + np.clip de anh xa
-       khoang cach ngon tay -> he so zoom
-    3. Viet test so gia lap (trong if __name__ == "__main__") de kiem tra 2 ham tren
-    4. Viet tai lieu ban giao ZOOM_MATH_README.md cho Nhan (mo ta input/output,
-       khoang gia tri distance do thuc te duoc tren webcam cua ban)
-
 Hop dong du lieu:
     calculate_distance(point1: tuple[int, int], point2: tuple[int, int]) -> float
     map_distance_to_zoom(distance: float,
@@ -35,13 +27,13 @@ def map_distance_to_zoom(distance,
                          max_zoom=3.0):
     """
     Ánh xạ khoảng cách sang hệ số zoom.
-    Khoảng cách càng nhỏ -> zoom càng lớn.
+    Khoảng cách càng lớn (xòe ngón) -> zoom càng lớn.
     """
 
     zoom = np.interp(
         distance,
         [min_distance, max_distance],
-        [max_zoom, min_zoom]
+        [min_zoom, max_zoom]
     )
 
     zoom = np.clip(

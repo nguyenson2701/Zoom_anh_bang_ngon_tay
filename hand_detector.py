@@ -6,18 +6,6 @@ Chuc nang:
     2. Dung MediaPipe Hands de nhan dien 21 landmark ban tay
     3. Lay toa do ngon cai (landmark 4) va ngon tro (landmark 8)
     4. Tra ve toa do pixel (x, y) cho tung diem, hoac None neu khong thay tay
-
-Hop dong du lieu (de Ngoc/Nhan test duoc truoc khi module nay xong):
-    HandDetector.find_finger_tips(frame)
-        -> ((x_thumb, y_thumb), (x_index, y_index))  toa do pixel tren frame
-        -> (None, None)  neu khong phat hien duoc ban tay
-
-Cach dung (vi du cho module khac):
-    detector = HandDetector()
-    frame = detector.find_hands(frame)              # ve khung xuong len frame (de hien thi)
-    thumb, index = detector.find_finger_tips(frame)  # tuple (x, y) kieu int, hoac None
-
-Chay test rieng module:  python hand_detector.py   (bam 'q' de thoat)
 """
 
 import time
