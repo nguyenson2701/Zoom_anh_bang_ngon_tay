@@ -1,14 +1,6 @@
 """
 Module 3 - Lam muot (smoothing) & ap dung zoom len anh (phu trach: Nhan)
 
-TODO (Nhan):
-    1. Class ZoomSmoother: lam muot chuoi he so zoom theo thoi gian
-       (weighted moving average, he so alpha)
-    2. Ham apply_zoom(frame, zoom_factor): crop vung giua frame theo zoom_factor
-       roi resize ve lai kich thuoc goc
-    3. Test toc do chum/xoe tay, kiem tra do muot
-    4. Tinh chinh he so alpha va gioi han zoom min/max
-
 Hop dong du lieu:
     ZoomSmoother(alpha: float = 0.3, min_zoom: float = 1.0, max_zoom: float = 3.0)
         .update(raw_zoom: float) -> float   # tra ve gia tri zoom da lam muot
@@ -21,28 +13,38 @@ import numpy as np
 
 class ZoomSmoother:
     def __init__(self, alpha: float = 0.3, min_zoom: float = 1.0, max_zoom: float = 3.0):
-        # TODO (Nhan): luu alpha, min_zoom, max_zoom va gia tri zoom hien tai (mac dinh 1.0)
-        raise NotImplementedError("Nhan: hoan thien ZoomSmoother.__init__")
+        self.alpha = alpha
+        self.min_zoom = min_zoom
+        self.max_zoom = max_zoom
+        self.current = min_zoom  # gia tri zoom hien tai (mac dinh 1.0)
 
     def update(self, raw_zoom: float) -> float:
-        """
-        TODO (Nhan): weighted moving average:
-            smoothed = alpha * raw_zoom + (1 - alpha) * smoothed_truoc_do
-        Nho clip ket qua ve trong [min_zoom, max_zoom] roi luu lai va tra ve.
-        """
-        raise NotImplementedError("Nhan: hoan thien ZoomSmoother.update")
+        # weighted moving average: smoothed = alpha * raw + (1 - alpha) * smoothed_truoc_do
+        smoothed = self.alpha * raw_zoom + (1 - self.alpha) * self.current
+        # clip ve [min_zoom, max_zoom], luu lai va tra ve
+        self.current = float(np.clip(smoothed, self.min_zoom, self.max_zoom))
+        return self.current
 
 
-def apply_zoom(frame, zoom_factor: float):
-    """
-    TODO (Nhan): crop vung giua cua frame theo zoom_factor (zoom_factor=1.0 la giu nguyen
-    frame, cang lon thi crop vung giua cang nho), roi cv2.resize ve lai kich thuoc goc
-    cua frame truyen vao.
-    """
-    raise NotImplementedError("Nhan: hoan thien apply_zoom")
+def apply_zoom(frame: "np.ndarray", zoom_factor: float) -> "np.ndarray":
+    # zoom_factor = 1.0 -> giu nguyen frame
+    if zoom_factor <= 1.0:
+        return frame
+    h, w = frame.shape[:2]
+    new_w, new_h = int(w / zoom_factor), int(h / zoom_factor)  # kich thuoc vung crop (ROI)
+    x1, y1 = (w - new_w) // 2, (h - new_h) // 2                # goc tren trai cua vung giua
+    roi = frame[y1:y1 + new_h, x1:x1 + new_w]
+    return cv2.resize(roi, (w, h), interpolation=cv2.INTER_LINEAR)  # phong to ve kich thuoc goc
 
 
 if __name__ == "__main__":
-    # TODO (Nhan): test voi anh gia lap (vd. np.zeros((480, 640, 3), dtype=np.uint8))
-    # va mot chuoi raw_zoom gia lap, in ra gia tri zoom da lam muot qua tung buoc
-    pass
+    # test apply_zoom voi anh gia lap
+    fake = np.zeros((480, 640, 3), dtype=np.uint8)
+    for z in (1.0, 2.0, 3.0):
+        out = apply_zoom(fake, z)
+        print(f"zoom={z}: shape={out.shape}")  # phai la (480, 640, 3)
+
+    # test ZoomSmoother voi chuoi raw_zoom gia lap
+    smoother = ZoomSmoother()
+    for raw in [1.0, 3.0, 3.0, 3.0, 1.0, 1.0]:
+        print(f"raw={raw:.1f} -> smoothed={smoother.update(raw):.2f}")
